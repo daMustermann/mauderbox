@@ -1,6 +1,7 @@
 import { ConnectionForm } from '@/components/ServerSettings/ConnectionForm';
 import { ServerStatus } from '@/components/ServerSettings/ServerStatus';
 import { UpdateStatus } from '@/components/ServerSettings/UpdateStatus';
+import { AutoUpdater } from '@/components/ServerSettings/AutoUpdater';
 import { isTauri } from '@/lib/tauri';
 import { useServerHealth } from '@/lib/hooks/useServer';
 import { useServerStore } from '@/stores/serverStore';
@@ -120,6 +121,8 @@ export function ServerTab() {
                         </div>
                     </CardContent>
                 </Card>
+
+                {isTauri() && <AutoUpdater />}
 
                 <ConnectionForm />
            </div>
