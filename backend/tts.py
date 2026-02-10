@@ -292,7 +292,7 @@ class TTSModel:
             self._current_model_size = None
             self._compiled_generate = None
             
-            if torch.cuda.is_available():
+            if torch is not None and torch.cuda.is_available():
                 torch.cuda.empty_cache()
             
             print("TTS model unloaded")

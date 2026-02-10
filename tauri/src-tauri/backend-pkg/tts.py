@@ -68,9 +68,9 @@ class TTSModel:
         if forced_device in {"rocm", "hip", "gpu", "amd"}:
             return "cuda"
 
-        if torch.cuda.is_available():
+        if torch is not None and torch.cuda.is_available():
             return "cuda"
-        elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+        elif torch is not None and hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
             # MPS can have issues, use CPU for stability
             return "cpu"
         return "cpu"
@@ -84,7 +84,7 @@ class TTSModel:
             return torch.float32
             
         # Use bfloat16 if supported for better performance/memory
-        if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
+        if torch is not None and torch.cuda.is_available() and torch.cuda.is_bf16_supported():
             return torch.bfloat16
             
         return torch.float16
@@ -292,7 +292,7 @@ class TTSModel:
             self._current_model_size = None
             self._compiled_generate = None
             
-            if torch.cuda.is_available():
+            if torch is not None and torch.cuda.is_available():
                 torch.cuda.empty_cache()
             
             print("TTS model unloaded")
@@ -345,6 +345,8 @@ class TTSModel:
             """Run synchronous voice prompt creation in thread pool."""
             if self.model is None:
                 raise RuntimeError("Model not loaded")
+            if torch is None:
+                raise RuntimeError("torch is not available")
             with torch.inference_mode():
                 return self.model.create_voice_clone_prompt(
                     ref_audio=str(audio_path),
@@ -420,6 +422,9 @@ class TTSModel:
 
         def _generate_sync():
             """Run synchronous generation in thread pool."""
+            if torch is None:
+                raise RuntimeError("torch is not available")
+            
             # Set seed if provided
             if seed is not None:
                 torch.manual_seed(seed)
