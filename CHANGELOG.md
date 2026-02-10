@@ -14,7 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **Attention Implementation** - Now uses `flash_attention_2` when available, otherwise falls back to `sdpa` (scaled dot product attention)
-- **requirements.txt** - Added optional flash-attn>=2.8.0 dependency for performance boost
+- **Lazy torch Import** - torch and flash_attn are now imported lazily to allow server binary to start without errors
+
+### Fixed
+- **Binary Startup Issue** - Fixed server binary failing to start due to torch import errors
+- **Flash Attention Optional** - Made flash-attn truly optional (commented in requirements.txt) to avoid CI build failures
 
 ## [0.2.5] - 2026-02-10
 

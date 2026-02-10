@@ -75,7 +75,12 @@ async def shutdown():
 @app.get("/health", response_model=models.HealthResponse)
 async def health():
     """Health check endpoint."""
-    from huggingface_hub import hf_hub_download, constants as hf_constants
+    try:
+        from huggingface_hub import hf_hub_download, constants as hf_constants
+    except ImportError:
+        hf_hub_download = None
+        hf_constants = None
+    
     from pathlib import Path
     import os
 
@@ -136,7 +141,10 @@ async def health():
                     model_downloaded = True
                     break
         except (ImportError, Exception):
-            # Method 2: Check cache directory (using HuggingFace's OS-specific cache location)
+            pass
+        
+        # Method 2: Check cache directory (using HuggingFace's OS-specific cache location)
+        if hf_constants is not None:
             cache_dir = hf_constants.HF_HUB_CACHE
             repo_cache = Path(cache_dir) / ("models--" + default_model_id.replace("/", "--"))
             if repo_cache.exists():

@@ -5,13 +5,19 @@ Whisper ASR module for transcription.
 from typing import Optional, List, Dict, Tuple
 import asyncio
 import os
-import torch
 import numpy as np
 from pathlib import Path
-from torch.nn import functional as F
 from .utils.progress import get_progress_manager
 from .utils.hf_progress import HFProgressTracker, create_hf_progress_callback
 from .utils.tasks import get_task_manager
+
+# Lazy import torch - allow module to load even without torch
+try:
+    import torch
+    from torch.nn import functional as F
+except ImportError:
+    torch = None  # type: ignore
+    F = None  # type: ignore
 
 
 class WhisperModel:

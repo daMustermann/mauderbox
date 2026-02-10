@@ -3,11 +3,16 @@ Voice prompt caching utilities.
 """
 
 import hashlib
-import torch
 from pathlib import Path
 from typing import Optional, Any
 
 from .. import config
+
+# Lazy import torch - allow module to load even without torch
+try:
+    import torch
+except ImportError:
+    torch = None  # type: ignore
 
 
 def _get_cache_dir() -> Path:
@@ -16,7 +21,7 @@ def _get_cache_dir() -> Path:
 
 
 # In-memory cache
-_memory_cache: dict[str, torch.Tensor] = {}
+_memory_cache: dict[str, Any] = {}
 
 
 def get_cache_key(audio_path: str, reference_text: str, model_size: str = "") -> str:

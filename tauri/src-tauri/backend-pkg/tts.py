@@ -5,7 +5,6 @@ TTS inference module using Qwen3-TTS.
 from typing import Optional, List, Tuple, Any
 import asyncio
 import os
-import torch
 import numpy as np
 import io
 import soundfile as sf
@@ -19,24 +18,34 @@ from .utils.hf_progress import HFProgressTracker, create_hf_progress_callback
 from .utils.tasks import get_task_manager
 from . import config
 
-# Performance optimizations for GPU inference
-# Enable TF32 for faster matmul on Ampere+ GPUs (also works well with ROCm)
-if torch.cuda.is_available():
-    torch.backends.cuda.matmul.allow_tf32 = True
-    torch.backends.cudnn.allow_tf32 = True
-    # Enable cudnn benchmark for consistent input sizes
-    torch.backends.cudnn.benchmark = True
-
-# Check for Flash Attention availability
-HAS_FLASH_ATTENTION = False
+# Lazy import torch - this module needs to be importable even without torch
+# The binary server will load torch from the system Python installation
 try:
-    import flash_attn
-    # Test if flash_attn actually works (not just installed)
-    from flash_attn.flash_attn_interface import flash_attn_func
-    HAS_FLASH_ATTENTION = True
-    print("✓ Flash Attention 2 detected and functional - will use for accelerated inference")
-except (ImportError, ModuleNotFoundError) as e:
-    print(f"Flash Attention 2 not available - using SDPA (scaled dot product attention)")
+    import torch
+    
+    # Performance optimizations for GPU inference
+    # Enable TF32 for faster matmul on Ampere+ GPUs (also works well with ROCm)
+    if torch.cuda.is_available():
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.allow_tf32 = True
+        # Enable cudnn benchmark for consistent input sizes
+        torch.backends.cudnn.benchmark = True
+    
+    # Check for Flash Attention availability
+    HAS_FLASH_ATTENTION = False
+    try:
+        import flash_attn
+        # Test if flash_attn actually works (not just installed)
+        from flash_attn.flash_attn_interface import flash_attn_func
+        HAS_FLASH_ATTENTION = True
+        print("✓ Flash Attention 2 detected and functional - will use for accelerated inference")
+    except (ImportError, ModuleNotFoundError) as e:
+        print(f"Flash Attention 2 not available - using SDPA (scaled dot product attention)")
+    
+except ImportError:
+    print("Warning: torch not available - TTS functionality will not work")
+    torch = None  # type: ignore
+    HAS_FLASH_ATTENTION = False
 
 
 class TTSModel:
@@ -66,7 +75,11 @@ class TTSModel:
             return "cpu"
         return "cpu"
 
-    def _get_torch_dtype(self) -> torch.dtype:
+    def _get_torch_dtype(self):
+        """Get the best torch dtype for the device."""
+        if torch is None:
+            return None
+            
         if self.device == "cpu":
             return torch.float32
             
