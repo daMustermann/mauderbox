@@ -140,7 +140,7 @@ That's it! 🎉
 - ROCm runtime included in Windows builds
 
 ##### 🚀 Flash Attention 2 (Optional Performance Boost)
-For even faster inference on AMD GPUs, install Flash Attention 2:
+For even faster inference on AMD/NVIDIA GPUs, install Flash Attention 2:
 
 ```bash
 pip install flash-attn --no-build-isolation
@@ -151,7 +151,7 @@ pip install flash-attn --no-build-isolation
 - Reduced memory usage
 - Automatic detection and fallback to SDPA if unavailable
 
-**Note:** Flash Attention 2 requires specific ROCm/CUDA versions. If installation fails, Mauderbox will automatically fall back to PyTorch's optimized SDPA (Scaled Dot Product Attention), which is still very fast.
+**Note:** Flash Attention 2 requires PyTorch and CUDA/ROCm toolkit for compilation. If installation fails or the module is not available, Mauderbox will automatically fall back to PyTorch's optimized SDPA (Scaled Dot Product Attention), which is still very fast. Flash Attention is not included in the default installation to avoid build issues.
 
 #### ⚠️ Apple Silicon (MPS)
 - Limited support (CPU fallback for stability)
