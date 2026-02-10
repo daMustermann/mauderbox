@@ -514,8 +514,8 @@ pub fn run() {
         .setup(|app| {
             #[cfg(desktop)]
             {
-                // Updater disabled - requires signing key
-                // app.handle().plugin(tauri_plugin_updater::Builder::new().build())?;
+                // Updater enabled for Mauderbox
+                app.handle().plugin(tauri_plugin_updater::Builder::new().build())?;
                 app.handle().plugin(tauri_plugin_process::init())?;
             }
 

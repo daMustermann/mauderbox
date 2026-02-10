@@ -127,15 +127,13 @@ jobs:
         with:
           projectPath: tauri
           tagName: v__VERSION__
-          releaseName: 'voicebox v__VERSION__'
+          releaseName: 'Mauderbox v__VERSION__'
           releaseBody: |
             ## What's Changed
             See the assets below to download and install this version.
 
             ### Installation
-            - **macOS**: Download the `.dmg` file
-            - **Windows**: Download the `.msi` installer
-            - **Linux**: Download the `.AppImage` or `.deb` package
+            - **Windows**: Download the `.msi` or `.exe` installer
 
             The app includes automatic updates - future updates will be installed automatically.
           releaseDraft: true
