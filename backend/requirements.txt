@@ -8,12 +8,7 @@ sqlalchemy==2.0.46
 alembic==1.18.1
 
 # --- ML / HuggingFace ---
-# torch / torchaudio / torchvision werden vom Installationsskript als
-# ROCm-Wheels installiert und sind hier NICHT enthalten.
-#
-# transformers 5.0.0 erfordert huggingface_hub>=1.3.0 (breaking change vs v4).
-# accelerate>=1.1.0 ist laut transformers setup.py erforderlich.
-transformers==5.0.0
+transformers==4.57.3
 accelerate==1.12.0
 huggingface_hub==1.3.7
 qwen-tts>=0.0.5
