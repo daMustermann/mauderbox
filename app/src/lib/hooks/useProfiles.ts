@@ -1,0 +1,170 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { apiClient } from '@/lib/api/client';
+import { queryKeys } from '@/lib/queryKeys';
+import type { VoiceProfileCreate } from '@/lib/api/types';
+import { isTauri } from '@/lib/tauri';
+
+export function useProfiles() {
+  return useQuery({
+    queryKey: queryKeys.profiles.list(),
+    queryFn: () => apiClient.listProfiles(),
+  });
+}
+
+export function useProfile(profileId: string) {
+  return useQuery({
+    queryKey: queryKeys.profiles.detail(profileId),
+    queryFn: () => apiClient.getProfile(profileId),
+    enabled: !!profileId,
+  });
+}
+
+export function useCreateProfile() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: VoiceProfileCreate) => apiClient.createProfile(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.profiles.list() });
+    },
+  });
+}
+
+export function useUpdateProfile() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ profileId, data }: { profileId: string; data: VoiceProfileCreate }) =>
+      apiClient.updateProfile(profileId, data),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.profiles.list() });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.profiles.detail(variables.profileId),
+      });
+    },
+  });
+}
+
+export function useDeleteProfile() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (profileId: string) => apiClient.deleteProfile(profileId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.profiles.list() });
+    },
+  });
+}
+
+export function useProfileSamples(profileId: string) {
+  return useQuery({
+    queryKey: queryKeys.profiles.samplesList(profileId),
+    queryFn: () => apiClient.listProfileSamples(profileId),
+    enabled: !!profileId,
+  });
+}
+
+export function useAddSample() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      profileId,
+      file,
+      referenceText,
+    }: {
+      profileId: string;
+      file: File;
+      referenceText: string;
+    }) => apiClient.addProfileSample(profileId, file, referenceText),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.profiles.samplesList(variables.profileId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.profiles.detail(variables.profileId),
+      });
+    },
+  });
+}
+
+export function useDeleteSample() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (sampleId: string) => apiClient.deleteProfileSample(sampleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.profiles.list() });
+    },
+  });
+}
+
+export function useExportProfile() {
+  return useMutation({
+    mutationFn: async (profileId: string) => {
+      const blob = await apiClient.exportProfile(profileId);
+      
+      // Get profile name for filename
+      const profile = await apiClient.getProfile(profileId);
+      const safeName = profile.name.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+      const filename = `profile-${safeName}.voicebox.zip`;
+      
+      if (isTauri()) {
+        // Use Tauri's native save dialog
+        try {
+          const { save } = await import('@tauri-apps/plugin-dialog');
+          const filePath = await save({
+            defaultPath: filename,
+            filters: [
+              {
+                name: 'Voicebox Profile',
+                extensions: ['voicebox.zip', 'zip'],
+              },
+            ],
+          });
+          
+          if (filePath) {
+            // Write file using Tauri's filesystem API
+            const { writeFile } = await import('@tauri-apps/plugin-fs');
+            const arrayBuffer = await blob.arrayBuffer();
+            await writeFile(filePath, new Uint8Array(arrayBuffer));
+          }
+        } catch (error) {
+          console.error('Failed to use Tauri dialog, falling back to browser download:', error);
+          // Fall back to browser download if Tauri dialog fails
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }
+      } else {
+        // Browser: trigger download
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+      
+      return blob;
+    },
+  });
+}
+
+export function useImportProfile() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (file: File) => apiClient.importProfile(file),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['profiles'] });
+    },
+  });
+}
