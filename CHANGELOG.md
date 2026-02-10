@@ -1,53 +1,65 @@
 # Changelog
 
-All notable changes to Voicebox will be documented in this file.
+All notable changes to Mauderbox will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2026-01-25
+## [0.2.3] - 2026-02-10
 
 ### Added
+- **Auto-Update UI Component** - New UI in Server tab for one-click updates
+- **Auto-Update System** - Automatic update checking and installation
+- **Update Notifications** - Visual alerts when new versions are available
+- **Download Progress** - Real-time progress bar during update downloads
+- **GitHub Releases Integration** - Automatic release creation via GitHub Actions
 
-#### Core Features
-- **Voice Cloning** - Clone voices from audio samples using Qwen3-TTS (1.7B and 0.6B models)
-- **Voice Profile Management** - Create, edit, and organize voice profiles with multiple samples
-- **Speech Generation** - Generate high-quality speech from text using cloned voices
-- **Generation History** - Track all generations with search and filtering capabilities
-- **Audio Transcription** - Automatic transcription powered by Whisper
-- **In-App Recording** - Record audio samples directly in the app with waveform visualization
+### Changed
+- **Project Renamed** - Voicebox is now **Mauderbox**
+- **Repository Moved** - New repository at https://github.com/daMustermann/mauderbox
+- **Complete Privacy** - Separated from upstream, fully independent project
+- **Documentation Updated** - New README with comprehensive feature list and ROCm compatibility details
 
-#### Desktop App
-- **Tauri Desktop App** - Native desktop application for macOS, Windows, and Linux
-- **Local Server Mode** - Embedded Python server runs automatically
-- **Remote Server Mode** - Connect to a remote Voicebox server on your network
-- **Auto-Updates** - Automatic update notifications and installation
+### Fixed
+- **TaskManager Initialization** - Fixed `_generation_stats` missing attribute error
+- **Generation Completion** - Fixed `actual_duration_seconds` parameter handling
+- **Backend Synchronization** - Tauri backend-pkg now properly synced with main backend
 
-#### API
-- **REST API** - Full REST API for voice synthesis and profile management
-- **OpenAPI Documentation** - Interactive API docs at `/docs` endpoint
-- **Type-Safe Client** - Auto-generated TypeScript client from OpenAPI schema
+### Technical
+- Added `tauri-plugin-updater` and `tauri-plugin-process` to dependencies
+- Configured signing keys for secure update distribution
+- GitHub Actions workflow updated for automated releases
+- Added Alert UI component for notifications
 
-#### Technical
-- **Voice Prompt Caching** - Fast regeneration with cached voice prompts
-- **Multi-Sample Support** - Combine multiple audio samples for better voice quality
-- **GPU/CPU/MPS Support** - Automatic device detection and optimization
-- **Model Management** - Lazy loading and VRAM management
-- **SQLite Database** - Local data persistence
+## [0.2.2] - 2026-02-10
 
-### Technical Details
+### Fixed
+- Fixed generation completion errors
+- Synchronized backend utilities between main and Tauri packages
 
-- Built with Tauri v2 (Rust + React)
+## [0.2.1] - 2026-02-10
+
+### Fixed
+- Initial bug fixes and stability improvements
+
+## [0.2.0] - 2026-02-10
+
+### Added
+- Initial release of Mauderbox (formerly Voicebox fork)
+- Voice cloning with Qwen3-TTS models (1.7B and 0.6B)
+- Voice profile management system
+- Audio generation history
+- In-app audio recording
+- Whisper-based transcription
+- Desktop app with Tauri v2
+- Full REST API with OpenAPI docs
+
+### Technical
+- Built with Tauri (Rust + React)
 - FastAPI backend with async Python
 - TypeScript frontend with React Query and Zustand
-- Qwen3-TTS for voice cloning
-- Whisper for transcription
-
-### Platform Support
-
-- macOS (Apple Silicon and Intel)
-- Windows
-- Linux (AppImage)
+- SQLite database for local persistence
+- GPU acceleration (CUDA, ROCm, MPS)
 
 ---
 

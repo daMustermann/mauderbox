@@ -112,6 +112,21 @@ jobs:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
           p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
 
+      - name: Extract Changelog
+        id: changelog
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Extract changelog for this version
+          CHANGELOG=$(sed -n "/## \[$VERSION\]/,/## \[/p" CHANGELOG.md | sed '$d' | tail -n +2)
+          
+          # Set multiline output
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        shell: bash
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -129,13 +144,16 @@ jobs:
           tagName: v__VERSION__
           releaseName: 'Mauderbox v__VERSION__'
           releaseBody: |
-            ## What's Changed
-            See the assets below to download and install this version.
-
-            ### Installation
-            - **Windows**: Download the `.msi` or `.exe` installer
-
-            The app includes automatic updates - future updates will be installed automatically.
+            ${{ steps.changelog.outputs.content }}
+            
+            ---
+            
+            ### 📥 Installation
+            - **Windows**: Download the `.msi` or `.exe` installer below
+            - The app includes automatic updates - future updates will be installed with one click
+            
+            ### 📝 Full Changelog
+            See [CHANGELOG.md](https://github.com/daMustermann/mauderbox/blob/main/CHANGELOG.md) for all changes.
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}

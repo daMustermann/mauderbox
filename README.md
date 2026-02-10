@@ -1,531 +1,274 @@
 <p align="center">
-  <img src=".github/assets/icon-dark.webp" alt="Voicebox" width="120" height="120" />
+  <img src=".github/assets/icon-dark.webp" alt="Mauderbox" width="120" height="120" />
 </p>
 
-<h1 align="center">Voicebox</h1>
+<h1 align="center">Mauderbox</h1>
 
 <p align="center">
-  <strong>The open-source voice synthesis studio by Maudersoft.</strong><br/>
-  Clone voices. Generate speech. Build voice-powered apps.<br/>
-  All running locally on your machine.
-</p>
-
-<p align="center">
-  <a href="#download">Download</a> •
-  <a href="#features">Features</a> •
-  <a href="#api">API</a> •
-  <a href="#building">Building</a>
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="landing/public/assets/app-screenshot-1.webp" alt="Voicebox App Screenshot" width="800" />
-</p>
-
-<br/>
-
-<p align="center">
-  <img src="landing/public/assets/app-screenshot-2.webp" alt="Voicebox Screenshot 2" width="800" />
+  <strong>Local-First Voice Cloning & AI Text-to-Speech Studio</strong><br/>
+  Professional voice synthesis. Zero cloud dependency. Full GPU acceleration.<br/>
+  Powered by Qwen3-TTS | Built by Maudersoft
 </p>
 
 <p align="center">
-  <img src="landing/public/assets/app-screenshot-3.webp" alt="Voicebox Screenshot 3" width="800" />
+  <a href="https://github.com/daMustermann/mauderbox/releases">📥 Download</a> •
+  <a href="#-features">✨ Features</a> •
+  <a href="#-quick-start">🚀 Quick Start</a> •
+  <a href="#-api">🔌 API</a> •
+  <a href="#-system-requirements">💻 Requirements</a>
 </p>
 
-<br/>
-
-## What is Voicebox?
-
-Voicebox is a **local-first voice cloning studio** developed by **Maudersoft** with DAW-like features for professional voice synthesis. Think of it as the **Ollama for voice** — download models, clone voices, and generate speech entirely on your machine.
-
-Unlike cloud services that lock your voice data behind subscriptions, Voicebox gives you:
-
-- **Complete privacy** — models and voice data stay on your machine
-- **Professional tools** — multi-track timeline editor, audio trimming, conversation mixing
-- **Model flexibility** — currently powered by Qwen3-TTS, with support for XTTS, Bark, and other models coming soon
-- **API-first** — use the desktop app or integrate voice synthesis into your own projects
-- **Native performance** — built with Tauri (Rust), not Electron
-
-Download a voice model, clone any voice from a few seconds of audio, and compose multi-voice projects with studio-grade editing tools. No Python install required, no cloud dependency, no limits.
+<p align="center">
+  <img src="https://img.shields.io/github/v/release/daMustermann/mauderbox?style=flat-square" alt="Release" />
+  <img src="https://img.shields.io/github/downloads/daMustermann/mauderbox/total?style=flat-square" alt="Downloads" />
+  <img src="https://img.shields.io/github/license/daMustermann/mauderbox?style=flat-square" alt="License" />
+</p>
 
 ---
 
-## Download
+## 🎯 What is Mauderbox?
 
-Voicebox is available for macOS and Windows.
+**Mauderbox** is a professional voice cloning and text-to-speech application that runs **100% locally** on your machine. No cloud. No subscriptions. No limits.
 
-| Platform | Download |
-|----------|----------|
-| macOS (Apple Silicon) | [voicebox_aarch64.app.tar.gz](https://github.com/daMustermann/voicebox/releases/download/v0.1.0/voicebox_aarch64.app.tar.gz) |
-| macOS (Intel) | [voicebox_x64.app.tar.gz](https://github.com/daMustermann/voicebox/releases/download/v0.1.0/voicebox_x64.app.tar.gz) |
-| Windows (MSI) | [voicebox_0.1.0_x64_en-US.msi](https://github.com/daMustermann/voicebox/releases/download/v0.1.0/voicebox_0.1.0_x64_en-US.msi) |
-| Windows (Setup) | [voicebox_0.1.0_x64-setup.exe](https://github.com/daMustermann/voicebox/releases/download/v0.1.0/voicebox_0.1.0_x64-setup.exe) |
+Think of it as **"Ollama for voice"** - download AI models, clone any voice from audio samples, and generate natural-sounding speech in seconds.
 
-> **Linux builds coming soon** — Currently blocked by GitHub runner disk space limitations.
+### Why Mauderbox?
 
----
-
-## Building the Installer
-
-### Prerequisites
-
-- [Node.js 18+](https://nodejs.org) and npm
-- [Rust](https://rustup.rs)
-- [Python 3.11+](https://python.org)
-- CUDA-capable GPU recommended (CPU inference supported but slower)
-
-### Build Steps
-
-```bash
-# Clone the repository
-git clone https://github.com/daMustermann/voicebox.git
-cd voicebox
-
-# Install JavaScript dependencies
-npm install
-
-# Install Python dependencies
-cd backend
-pip install -r requirements.txt
-cd ..
-
-# Build the backend server executable (Windows)
-cd backend
-python build_binary.py
-cd ..
-
-# Build the Tauri app
-cd tauri
-npm install
-npm run tauri build
-cd ..
-```
-
-The installer will be created in `tauri/src-tauri/target/release/bundle/`.
-
-**Windows:** `.msi` and `-setup.exe` installers  
-**macOS:** `.app` bundle and `.dmg` installer  
-**Linux:** `.deb`, `.AppImage`, and other formats
+- 🔒 **Complete Privacy** - All processing happens locally, your voice data never leaves your machine
+- ⚡ **GPU Accelerated** - Native support for NVIDIA CUDA and AMD ROCm
+- 🎨 **Professional Tools** - Voice profile management, audio editing, generation history
+- 🔌 **API-First** - Full REST API for integration into your projects
+- 📦 **Zero Config** - Download, install, and start generating - no Python setup required
+- 🆓 **Free & Open Source** - MIT License
 
 ---
 
-## Development
+## ✨ Features
 
-```bash
-npm install
-npm run dev
-```
+### 🎤 Voice Cloning
+- **One-Shot Cloning** - Clone voices from just a few seconds of audio
+- **Multi-Sample Support** - Combine multiple samples for improved quality
+- **Voice Profiles** - Organize and manage unlimited voice profiles
+- **In-App Recording** - Record samples directly or upload audio files
+- **Auto-Transcription** - Powered by Whisper for accurate text alignment
 
----
+### 🗣️ Text-to-Speech Generation
+- **Natural Speech** - High-quality synthesis with Qwen3-TTS (1.7B & 0.6B models)
+- **Multiple Voices** - Generate speech with any cloned voice profile
+- **Batch Generation** - Process multiple texts at once
+- **Generation History** - Track, search, and replay all generations
+- **Audio Export** - Save as WAV files with one click
 
-## Features
+### 🔧 Advanced Features
+- **Voice Prompt Caching** - Lightning-fast regeneration with cached prompts
+- **Instruct Mode** - Fine-grained control over tone, pace, and emotion
+- **Real-Time Preview** - Instant audio playback in the app
+- **Smart Model Loading** - Automatic VRAM management and lazy loading
+- **Update System** - Automatic updates with one-click installation
 
-### 🎤 Voice Cloning & Management
+### 🖥️ Desktop Application
+- **Native Performance** - Built with Tauri (Rust), not Electron
+- **Embedded Server** - Python backend runs automatically
+- **Remote Mode** - Connect to a server on your network
+- **Dark Theme** - Beautiful, modern interface
+- **Cross-Platform** - Windows, macOS (Intel & Apple Silicon), Linux
 
-**Voice Profile System**
-- Create unlimited voice profiles from audio samples
-- Import/Export profiles for sharing and backup
-- Multi-sample support for higher quality voice cloning
-- Search and organize profiles with metadata
-- Language-specific voice configuration
-
-### 🔊 Speech Generation
-
-**Qwen3-TTS Integration**
-- Two model sizes: 1.7B (high quality) and 0.6B (faster)
-- Multiple language support (English, Chinese, and more)
-- Prompt enhancement with AI-powered text improvement
-- Smart voice prompt caching for instant regeneration
-- Direct TTS endpoint for API integration
-
-### 📝 Stories & Timeline Editor
-
-**Multi-Voice Narratives**
-- Create projects with multiple voice tracks
-- Timeline-based audio arrangement
-- Trim, split, and duplicate audio clips
-- Move and reorder story segments
-- Export complete stories to audio files
-- Mix multiple voices in conversations
-
-### 🎵 Audio Channels
-
-**System Audio Routing**
-- Create custom audio channels
-- Route voices to specific output devices
-- Configure per-channel audio settings
-- Real-time audio device management (Tauri only)
-
-### 📊 Generation History
-
-**Complete Audit Trail**
-- Full history of all TTS generations
-- Search and filter by voice, text, or date
-- Favorite important generations
-- Re-generate with same parameters
-- Export individual generations
-- Usage statistics and analytics
-
-### 🎙️ Recording & Transcription
-
-**Audio Capture**
-- System audio recording (Windows/macOS with Tauri)
-- Automatic transcription via Whisper
-- Direct audio upload for profile creation
-
-### 🖥️ Model Management
-
-**Local Model Control**
-- Download Qwen3-TTS models (1.7B, 0.6B)
-- Load/unload models on demand
-- Real-time GPU/VRAM monitoring
-- Model download progress tracking
-- Automatic model caching
-
-### 🔌 Flexible Deployment
-
-**Connection Modes**
-- **Local Mode**: Run everything on your machine (embedded server)
-- **Remote Mode**: Connect to GPU server on your network
-- **Headless Mode**: Pure API server without UI
-- Auto-restart and health monitoring
+### 🔌 REST API
+- **Full API Access** - Everything the UI can do, the API can do
+- **OpenAPI Docs** - Interactive documentation at `/docs`
+- **Type-Safe Client** - Auto-generated TypeScript types
+- **WebSocket Support** - Real-time progress updates
 
 ---
 
-## API
+## 🚀 Quick Start
 
-Voicebox exposes a full REST API for integration into your own applications.
+### Installation
 
-### Core Endpoints
+1. **Download** the latest installer for your platform:
+   - [Windows (x64) Installer](https://github.com/daMustermann/mauderbox/releases/latest)
+   - macOS and Linux coming soon
 
-**Generation & TTS**
+2. **Install** and launch Mauderbox
+
+3. **Download a model** (first launch):
+   - Navigate to the **Server** tab
+   - Click "Download Model"
+   - Choose **Qwen3-TTS-1.7B** (recommended) or **0.6B** (faster, less VRAM)
+
+4. **Create a voice profile**:
+   - Go to the **Voices** tab
+   - Click "New Profile"
+   - Record or upload audio samples (3-10 seconds recommended)
+   - Add transcription text
+   - Save the profile
+
+5. **Generate speech**:
+   - Enter your text in the main editor
+   - Select your voice profile
+   - Click "Generate"
+   - Play or download the audio
+
+That's it! 🎉
+
+---
+
+## 💻 System Requirements
+
+### Minimum Requirements
+- **OS**: Windows 10/11 (64-bit), macOS 11+, or Linux
+- **RAM**: 8 GB
+- **Storage**: 10 GB free space
+- **Processor**: Modern multi-core CPU
+
+### Recommended for Best Performance
+- **GPU**: NVIDIA GPU (6GB+ VRAM) or AMD GPU with ROCm support
+- **RAM**: 16 GB+
+- **Storage**: SSD with 20 GB+ free space
+
+### GPU Acceleration Support
+
+#### ✅ NVIDIA (CUDA)
+- Automatic detection and configuration
+- Supports RTX 20/30/40 series, GTX 16 series, and newer
+- Recommended: 8GB+ VRAM for 1.7B model, 4GB+ for 0.6B model
+
+#### ✅ AMD (ROCm)
+- **Full compatibility** with AMD GPUs
+- Supported on Windows and Linux
+- Recommended: RX 6000/7000 series with 8GB+ VRAM
+- ROCm runtime included in Windows builds
+
+#### ⚠️ Apple Silicon (MPS)
+- Limited support (CPU fallback for stability)
+- Future updates will improve MPS performance
+
+#### 💻 CPU-Only Mode
+- Works on any system without a GPU
+- Generation time: ~2-5x slower than GPU
+- Suitable for testing and light usage
+
+---
+
+## 🔌 API
+
+Mauderbox includes a full REST API for integration into your own projects.
+
+### Starting the Server
+
 ```bash
-# Direct TTS (returns WAV audio)
-curl -X POST http://localhost:17493/tts \
-  -H "Content-Type: application/json" \
-  -d '{
-    "text": "Hello world",
-    "profile_id": "abc123",
-    "language": "en",
-    "model_size": "1.7B"
-  }' \
-  --output voice.wav
-
-# Generate with metadata (returns generation record)
-curl -X POST http://localhost:17493/generate \
-  -H "Content-Type: application/json" \
-  -d '{
-    "text": "Hello world",
-    "profile_id": "abc123",
-    "language": "en",
-    "model_size": "1.7B"
-  }'
-```
-
-**Voice Profiles**
-```bash
-# List all profiles
-curl http://localhost:17493/profiles
-
-# Create profile from audio
-curl -X POST http://localhost:17493/profiles \
-  -F "audio=@voice-sample.wav" \
-  -F "name=My Voice" \
-  -F "language=en"
-
-# Get specific profile
-curl http://localhost:17493/profiles/{profile_id}
-
-# Export profile
-curl http://localhost:17493/profiles/{profile_id}/export \
-  --output profile.zip
-
-# Import profile
-curl -X POST http://localhost:17493/profiles/import \
-  -F "file=@profile.zip"
-```
-
-**Generation History**
-```bash
-# List history with pagination
-curl "http://localhost:17493/history?limit=50&offset=0"
-
-# Get specific generation
-curl http://localhost:17493/history/{generation_id}
-
-# Export audio
-curl http://localhost:17493/history/{generation_id}/export-audio \
-  --output generated.wav
-
-# Favorite a generation
-curl -X POST http://localhost:17493/history/{generation_id}/favorite
-```
-
-**Stories**
-```bash
-# List stories
-curl http://localhost:17493/stories
-
-# Create story
-curl -X POST http://localhost:17493/stories \
-  -H "Content-Type: application/json" \
-  -d '{"title": "My Story"}'
-
-# Add item to story
-curl -X POST http://localhost:17493/stories/{story_id}/items \
-  -H "Content-Type: application/json" \
-  -d '{
-    "generation_id": "gen123",
-    "start_time": 0.0,
-    "duration": 5.0
-  }'
-
-# Export story audio
-curl http://localhost:17493/stories/{story_id}/export-audio \
-  --output story.wav
-```
-
-**Model Management**
-```bash
-# Get model status
-curl http://localhost:17493/models/status
-
-# Download model
-curl -X POST http://localhost:17493/models/download \
-  -H "Content-Type: application/json" \
-  -d '{"model_name": "1.7B"}'
-
-# Check download progress
-curl http://localhost:17493/models/progress/1.7B
-
-# Load model into memory
-curl -X POST http://localhost:17493/models/load \
-  -H "Content-Type: application/json" \
-  -d '{"model_size": "1.7B"}'
-
-# Unload model
-curl -X POST http://localhost:17493/models/unload
-```
-
-**Prompt Enhancement**
-```bash
-# Get enhancer status
-curl http://localhost:17493/prompt-enhancer/status
-
-# Load prompt enhancer
-curl -X POST http://localhost:17493/prompt-enhancer/load
-
-# Enhance text
-curl -X POST http://localhost:17493/prompt-enhancer/enhance \
-  -H "Content-Type: application/json" \
-  -d '{"text": "hello"}'
-```
-
-**Audio Channels**
-```bash
-# List channels
-curl http://localhost:17493/channels
-
-# Create channel
-curl -X POST http://localhost:17493/channels \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "My Channel",
-    "device_id": "device123"
-  }'
-
-# Assign voices to channel
-curl -X PUT http://localhost:17493/channels/{channel_id}/voices \
-  -H "Content-Type: application/json" \
-  -d '{"profile_ids": ["profile1", "profile2"]}'
-```
-
-**Transcription**
-```bash
-# Transcribe audio file
-curl -X POST http://localhost:17493/transcribe \
-  -F "audio=@recording.wav"
+# Desktop app starts automatically on port 17493
+# Or run standalone:
+python -m backend.main
 ```
 
 ### API Documentation
 
-Full interactive API documentation is available at `http://localhost:17493/docs` when the server is running.
+Once running, access interactive docs at:
+```
+http://localhost:17493/docs
+```
 
-### Use Cases
+### Quick Example
 
-- **Game dialogue systems** - Generate dynamic NPC voices
-- **Content creation** - Automated podcast/video voiceovers
-- **Accessibility tools** - Text-to-speech for screen readers
-- **Voice assistants** - Custom voice personalities
-- **Language learning** - Multi-language pronunciation
-- **Audiobook production** - Consistent narration voice
+```python
+import requests
 
----
+# Generate speech
+response = requests.post("http://localhost:17493/generate", json={
+    "text": "Hello, this is a test of Mauderbox!",
+    "profile_id": "your-profile-id",
+})
 
-## Tech Stack
+audio_url = response.json()["audio_url"]
+```
 
-| Layer | Technology |
-|-------|------------|
-| Desktop App | Tauri (Rust) - Native performance, small bundle size |
-| Frontend | React, TypeScript, TanStack Router, TanStack Query |
-| UI Components | Tailwind CSS, shadcn/ui, Framer Motion |
-| State Management | Zustand |
-| Backend | FastAPI (Python) - Async with auto-generated OpenAPI |
-| TTS Model | Qwen3-TTS (1.7B, 0.6B) |
-| Prompt Enhancement | Qwen2.5-3B-Instruct |
-| Transcription | Whisper (planned) |
-| Database | SQLite |
-| Audio Processing | soundfile, numpy, librosa |
-| Type Safety | Generated TypeScript client from OpenAPI spec |
+### TypeScript Client
 
-**Why this stack?**
+Auto-generated client available in `app/src/lib/api/`
 
-- **Tauri over Electron** — 10x smaller bundle, native performance, lower memory usage
-- **FastAPI** — Modern async Python with automatic API documentation
-- **Qwen3-TTS** — State-of-the-art voice cloning from minimal samples
-- **Type-safe end-to-end** — OpenAPI-generated TypeScript ensures frontend/backend compatibility
-- **Local-first** — All processing on your machine, no cloud dependency
+```typescript
+import { DefaultService } from '@/lib/api';
+
+const result = await DefaultService.generateSpeech({
+  text: "Hello world",
+  profile_id: "profile-id"
+});
+```
 
 ---
 
-## Roadmap
+## 🛠️ Building from Source
 
-Voicebox by Maudersoft is under active development. Here's what's planned:
+### Prerequisites
 
-### Planned Features
+- **Bun** (for frontend): `npm install -g bun`
+- **Rust** (for Tauri): [rustup.rs](https://rustup.rs)
+- **Python 3.11+**: [python.org](https://python.org)
+- **Node.js 18+**: [nodejs.org](https://nodejs.org)
 
-| Feature | Status | Description |
-|---------|--------|-------------|
-| **Whisper Transcription** | In Progress | Full integration for audio-to-text |
-| **Word-level Timestamps** | Planned | Precise word alignment in timeline editor |
-| **Audio Effects** | Planned | Reverb, pitch shift, normalization |
-| **XTTS Support** | Planned | Alternative TTS model option |
-| **Bark Support** | Planned | Multi-speaker voice synthesis |
-| **Real-time Streaming** | Planned | Stream audio as it generates |
-| **Voice Effects Studio** | Planned | Advanced voice modulation and effects |
-| **Linux Builds** | Blocked | GitHub runner disk space limitations |
-
-### Completed Features
-
-✅ Voice profile management with import/export  
-✅ Multi-voice story timeline editor  
-✅ Generation history with favorites  
-✅ Audio channel routing  
-✅ Model management (download, load, unload)  
-✅ Prompt enhancement with Qwen2.5  
-✅ Remote server support  
-✅ Full REST API with OpenAPI docs  
-✅ System audio device selection (Tauri)  
-
----
-
-## Development
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed setup and contribution guidelines.
-
-### Quick Start
+### Build Steps
 
 ```bash
-# Clone the repo
-git clone https://github.com/daMustermann/voicebox.git
-cd voicebox
+# Clone repository
+git clone https://github.com/daMustermann/mauderbox.git
+cd mauderbox
 
-# Install JavaScript dependencies
-npm install
+# Install dependencies
+bun install
 
-# Install Python dependencies
+# Build Python server
 cd backend
 pip install -r requirements.txt
+python build_binary.py
 cd ..
 
-# Start development server
-npm run dev
+# Build desktop app
+cd tauri
+bun run tauri build
 ```
 
-### Development Mode
-
-The `npm run dev` command starts:
-- **Frontend dev server** (Vite) with hot reload
-- **Backend server** (FastAPI) with auto-reload
-- Both running concurrently
-
-### Project Structure
-
-```
-voicebox/
-├── app/              # Shared React frontend (used by web & tauri)
-│   ├── src/
-│   │   ├── components/   # UI components
-│   │   ├── hooks/        # React hooks
-│   │   ├── lib/          # Utilities and API client
-│   │   ├── stores/       # Zustand state management
-│   │   └── types/        # TypeScript types
-│   └── package.json
-├── tauri/            # Desktop app (Tauri + Rust)
-│   ├── src/          # Frontend entry point
-│   └── src-tauri/    # Rust backend
-│       ├── src/      # Tauri main process
-│       └── Cargo.toml
-├── web/              # Web-only deployment
-├── backend/          # Python FastAPI server
-│   ├── main.py       # API routes
-│   ├── tts.py        # TTS engine
-│   ├── models.py     # Pydantic models
-│   ├── database.py   # SQLite database
-│   ├── profiles.py   # Voice profile management
-│   ├── stories.py    # Story/timeline logic
-│   ├── history.py    # Generation history
-│   ├── transcribe.py # Whisper integration
-│   ├── prompt_enhancer.py  # AI text enhancement
-│   └── utils/        # Helper modules
-├── landing/          # Marketing website (Next.js)
-├── scripts/          # Build & release automation
-└── package.json      # Root workspace config
-```
-
-**Prerequisites:** 
-- [Node.js 18+](https://nodejs.org)
-- [Rust](https://rustup.rs) (for Tauri builds)
-- [Python 3.11+](https://python.org)
-- CUDA-capable GPU recommended (CPU inference supported but slower)
+Installers will be in `tauri/src-tauri/target/release/bundle/`
 
 ---
 
-## Contributing
+## 📚 Documentation
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-### How to Contribute
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Test thoroughly
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
-
-### Development Guidelines
-
-- Follow existing code style and conventions
-- Add tests for new features
-- Update documentation as needed
-- Keep commits focused and descriptive
-- Ensure all tests pass before submitting PR
-
-## Security
-
-Found a security vulnerability? Please report it responsibly. See [SECURITY.md](SECURITY.md) for details.
-
-**Do not** open public issues for security vulnerabilities.
+- [Auto-Update Setup](AUTOUPDATER_SETUP.md) - Configure automatic updates
+- [GitHub Secrets Guide](GITHUB_SECRETS_ANLEITUNG.md) - Set up release signing
+- [API Documentation](http://localhost:17493/docs) - Interactive API reference
+- [Changelog](CHANGELOG.md) - Version history and updates
 
 ---
 
-## License
+## 🤝 Contributing
 
-MIT License — see [LICENSE](LICENSE) for details.
-
-**Developed by Maudersoft**
+Contributions are welcome! Please feel free to submit issues or pull requests.
 
 ---
+
+## 📝 License
+
+MIT License - see [LICENSE](LICENSE) file for details
+
+---
+
+## 🙏 Acknowledgments
+
+- **Qwen3-TTS** - State-of-the-art voice synthesis model
+- **Tauri** - Cross-platform desktop framework
+- **FastAPI** - Modern Python web framework
+- **Whisper** - Speech recognition and transcription
+
+---
+
+## 💬 Support
+
+- **Issues**: [GitHub Issues](https://github.com/daMustermann/mauderbox/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/daMustermann/mauderbox/discussions)
+
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/daMustermann">Maudersoft</a>
+</p>
