@@ -12,6 +12,7 @@ transformers==4.57.3
 accelerate==1.12.0
 huggingface-hub>=0.34.0,<1.0
 qwen-tts>=0.0.5
+flash-attn>=2.8.0  # Optional: Massive speedup for attention layers on GPU
 
 # --- Audio Processing ---
 numba==0.60.0

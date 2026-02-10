@@ -14,15 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: 'macos-latest'
-            args: '--target aarch64-apple-darwin'
-            python-version: '3.12'
-          - platform: 'macos-15-intel'
-            args: '--target x86_64-apple-darwin'
-            python-version: '3.12'
-          # - platform: 'ubuntu-22.04'
-          #   args: ''
-          #   python-version: '3.12'
           - platform: 'windows-latest'
             args: ''
             python-version: '3.12'
@@ -31,19 +22,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf llvm-dev
-
-      - name: Install LLVM (macOS)
-        if: matrix.platform == 'macos-latest' || matrix.platform == 'macos-15-intel'
-        run: |
-          brew install llvm@20
-          echo "$(brew --prefix llvm@20)/bin" >> $GITHUB_PATH
-          echo "LLVM_CONFIG=$(brew --prefix llvm@20)/bin/llvm-config" >> $GITHUB_ENV
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -57,14 +35,7 @@ jobs:
           pip install pyinstaller
           pip install -r backend/requirements.txt
 
-      - name: Build Python server (Linux/macOS)
-        if: matrix.platform != 'windows-latest'
-        run: |
-          chmod +x scripts/build-server.sh
-          ./scripts/build-server.sh
-
       - name: Build Python server (Windows)
-        if: matrix.platform == 'windows-latest'
         shell: bash
         run: |
           cd backend
@@ -85,8 +56,6 @@ jobs:
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ (matrix.platform == 'macos-latest' && 'aarch64-apple-darwin') || (matrix.platform == 'macos-15-intel' && 'x86_64-apple-darwin') || '' }}
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
@@ -95,22 +64,6 @@ jobs:
 
       - name: Install dependencies
         run: bun install
-
-      - name: Install Apple API key
-        if: matrix.platform == 'macos-latest' || matrix.platform == 'macos-15-intel'
-        run: |
-          mkdir -p ~/.appstoreconnect/private_keys/
-          cd ~/.appstoreconnect/private_keys/
-          echo ${{ secrets.APPLE_API_KEY_BASE64 }} >> AuthKey_${{ secrets.APPLE_API_KEY }}.p8.base64
-          base64 --decode -i AuthKey_${{ secrets.APPLE_API_KEY }}.p8.base64 -o AuthKey_${{ secrets.APPLE_API_KEY }}.p8
-          rm AuthKey_${{ secrets.APPLE_API_KEY }}.p8.base64
-
-      - name: Install Codesigning Certificate
-        if: matrix.platform == 'macos-latest' || matrix.platform == 'macos-15-intel'
-        uses: apple-actions/import-codesign-certs@v3
-        with:
-          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
-          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
 
       - name: Extract Changelog
         id: changelog
@@ -132,13 +85,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-          ENABLE_CODE_SIGNING: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          APPLE_PROVIDER_SHORT_NAME: ${{ secrets.APPLE_PROVIDER_SHORT_NAME }}
-          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
-          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
         with:
           projectPath: tauri
           tagName: v__VERSION__

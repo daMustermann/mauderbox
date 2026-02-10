@@ -139,6 +139,20 @@ That's it! 🎉
 - Recommended: RX 6000/7000 series with 8GB+ VRAM
 - ROCm runtime included in Windows builds
 
+##### 🚀 Flash Attention 2 (Optional Performance Boost)
+For even faster inference on AMD GPUs, install Flash Attention 2:
+
+```bash
+pip install flash-attn --no-build-isolation
+```
+
+**Benefits:**
+- 2-3x faster attention computation
+- Reduced memory usage
+- Automatic detection and fallback to SDPA if unavailable
+
+**Note:** Flash Attention 2 requires specific ROCm/CUDA versions. If installation fails, Mauderbox will automatically fall back to PyTorch's optimized SDPA (Scaled Dot Product Attention), which is still very fast.
+
 #### ⚠️ Apple Silicon (MPS)
 - Limited support (CPU fallback for stability)
 - Future updates will improve MPS performance

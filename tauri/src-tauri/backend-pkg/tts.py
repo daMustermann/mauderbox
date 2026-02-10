@@ -27,6 +27,17 @@ if torch.cuda.is_available():
     # Enable cudnn benchmark for consistent input sizes
     torch.backends.cudnn.benchmark = True
 
+# Check for Flash Attention availability
+HAS_FLASH_ATTENTION = False
+try:
+    import flash_attn
+    # Test if flash_attn actually works (not just installed)
+    from flash_attn.flash_attn_interface import flash_attn_func
+    HAS_FLASH_ATTENTION = True
+    print("✓ Flash Attention 2 detected and functional - will use for accelerated inference")
+except (ImportError, ModuleNotFoundError) as e:
+    print(f"Flash Attention 2 not available - using SDPA (scaled dot product attention)")
+
 
 class TTSModel:
     """Manages Qwen3-TTS model loading and inference."""
@@ -64,6 +75,16 @@ class TTSModel:
             return torch.bfloat16
             
         return torch.float16
+    
+    def _get_attn_implementation(self) -> str:
+        """Get the best available attention implementation."""
+        if self.device == "cpu":
+            return "eager"  # Flash Attention doesn't work on CPU
+        
+        if HAS_FLASH_ATTENTION:
+            return "flash_attention_2"
+        
+        return "sdpa"  # Scaled Dot Product Attention (PyTorch default)
     
     def is_loaded(self) -> bool:
         """Check if model is loaded."""
@@ -180,7 +201,7 @@ class TTSModel:
                             model_path,
                             device_map=self.device,
                             torch_dtype=self._get_torch_dtype(),
-                            attn_implementation="sdpa",
+                            attn_implementation=self._get_attn_implementation(),
                         )
                     
                     # Mark as complete
@@ -192,7 +213,7 @@ class TTSModel:
                         model_path,
                         device_map=self.device,
                         torch_dtype=self._get_torch_dtype(),
-                        attn_implementation="sdpa",
+                        attn_implementation=self._get_attn_implementation(),
                     )
 
             else:
@@ -202,7 +223,7 @@ class TTSModel:
                     model_path,
                     device_map=self.device,
                     torch_dtype=self._get_torch_dtype(),
-                    attn_implementation="sdpa",
+                    attn_implementation=self._get_attn_implementation(),
                 )
             
             self._current_model_size = model_size
