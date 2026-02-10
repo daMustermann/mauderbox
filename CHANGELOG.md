@@ -5,6 +5,13 @@ All notable changes to Mauderbox will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.5] - 2026-02-10
+
+### Fixed
+- **Dependency Conflicts** - Fixed huggingface-hub version conflict with transformers
+- **requirements.txt** - Removed duplicate librosa entry and cleaned up dependencies
+- **Version Compatibility** - Ensured all package versions are compatible
+
 ## [0.2.4] - 2026-02-10
 
 ### Fixed
